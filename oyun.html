@@ -232,15 +232,35 @@
 </head>
 <body>
 
-  <!-- Üst Menü -->
-  <nav>
-    <div class="logo font-bold text-xl text-[#06D6A0]">Mol Günü 🎉</div>
-    <div class="links">
-      <a href="index.html">🏠 Ana Sayfa</a>
-      <a href="oyun-quiz.html">❓ Mol Quiz</a>
-      <a href="oyun-lab.html">🧪 Laboratuvar Kaçışı</a>
-    </div>
-  </nav>
+    <!-- 🧪 Navigasyon Menüsü -->
+    <nav class="bg-[#0A2C38] text-white fixed top-0 left-0 w-full z-50 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+        <a href="/" class="text-2xl font-bold text-[#06D6A0]">Mol Günü</a>
+        <button id="menuBtn" class="md:hidden focus:outline-none">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" 
+               viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <ul id="menuLinks" class="hidden md:flex space-x-8 text-lg">
+          <li><a href="#mol" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
+          <li><a href="#grafik" class="hover:text-[#FFD166]">Grafikler</a></li>
+          <li><a href="#kutlama" class="hover:text-[#FFD166]">Kutlama</a></li>
+          <li><a href="oyun.html" class="hover:text-[#FFD166] font-bold">🎮 Oyun</a></li>
+        </ul>
+      </div>
+
+      <!-- Mobil Menü -->
+      <div id="mobileMenu" class="hidden md:hidden bg-[#0A2C38] px-4 pb-4">
+        <ul class="flex flex-col space-y-3 text-lg">
+          <li><a href="#mol" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
+          <li><a href="#grafik" class="hover:text-[#FFD166]">Grafikler</a></li>
+          <li><a href="#kutlama" class="hover:text-[#FFD166]">Kutlama</a></li>
+          <li><a href="oyun.html" class="hover:text-[#FFD166] font-bold">🎮 Oyun</a></li>
+        </ul>
+      </div>
+    </nav>
 
   <main>
     <div class="wrap">
@@ -271,7 +291,9 @@
     </div>
   </main>
 
-  <footer>© 2025 Mol Günü | Pamukkale Üniversitesi Kimya Etkinliği</footer>
+          <footer class="text-center text-xs text-gray-400 py-8">
+            <p>Bu infografik, kimyayı sevdirmek amacıyla hazırlanmıştır. No SVG or Mermaid JS used.</p>
+        </footer>
 
   <script>
     const ELEMENTS = [
