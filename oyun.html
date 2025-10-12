@@ -435,3 +435,19 @@
         conf.appendChild(s);
         requestAnimationFrame(() => {
           s.style.transform = `translateY(${110+Math.random()*30}vh) rotate(${(Math.random()*360)|0}deg)`;
+   s.style.opacity = 0;
+        });
+      }
+      setTimeout(()=>conf.remove(), 1400);
+    }
+
+    // Olaylar
+    levelSel.addEventListener('change', ()=>{ render(parseInt(levelSel.value,10)); });
+    restartBtn.addEventListener('click', ()=>{ render(parseInt(levelSel.value,10)); });
+
+    // Başlangıç
+    render(parseInt(levelSel.value,10));
+    
+  </script>
+</body>
+</html>
