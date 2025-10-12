@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🧪 İsmini Elementlerle Yaz | Mol Günü</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Montserrat',sans-serif;background:#073B4C;color:#fff;padding-top:64px}
+  .cards-row{display:flex;flex-wrap:nowrap;justify-content:center;gap:12px;margin-top:12px;overflow-x:auto;padding-bottom:10px;scroll-behavior:smooth}
+  .card{min-width:120px;height:150px;border-radius:14px;text-align:center;padding:8px;box-shadow:0 0 12px rgba(0,0,0,.3);transition:transform .2s;flex-shrink:0}
+  .card:hover{transform:scale(1.05)}
+  .missing{background:#4b5563;opacity:.9}
+  .card .num{font-size:12px;opacity:.85}
+  .card .symbol{font-size:40px;font-weight:900}
+  .card .name{font-size:16px;font-weight:600}
+  /* Grup renkleri */
+  .grp-alkali{background:linear-gradient(135deg,#FF9F1C,#FFBF69)}
+  .grp-toprak{background:linear-gradient(135deg,#FFD166,#F6AE2D)}
+  .grp-transition{background:linear-gradient(135deg,#118AB2,#06D6A0)}
+  .grp-metal{background:linear-gradient(135deg,#8EC5FF,#3B82F6)}
+  .grp-metalloid{background:linear-gradient(135deg,#9D4EDD,#7B2CBF)}
+  .grp-ametal{background:linear-gradient(135deg,#06D6A0,#0CBABA)}
+  .grp-halojen{background:linear-gradient(135deg,#EF476F,#FF6B6B)}
+  .grp-soygaz{background:linear-gradient(135deg,#8338EC,#3A86FF)}
+  .grp-lantanit{background:linear-gradient(135deg,#00C2A8,#00A896)}
+  .grp-aktinit{background:linear-gradient(135deg,#FF7F50,#E85D04)}
+  .grp-unknown{background:linear-gradient(135deg,#8D99AE,#6C757D)}
+  .watermark{font-size:10px;color:#ccc;text-align:center;margin-top:6px}
+</style>
+</head>
+<body class="bg-[#073B4C] text-white">
+
+<!-- Üst Menü -->
+  <!-- 🧪 Navigasyon Menüsü -->
+<nav class="bg-[#0A2C38] text-white fixed top-0 left-0 w-full z-50 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <a href="index.html" class="text-2xl font-bold text-[#06D6A0]">Mol Günü</a>
+
+    <!-- Mobil menü butonu -->
+    <button id="menuBtn" class="md:hidden focus:outline-none">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" 
+           viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" 
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <!-- Masaüstü Menü -->
+    <ul id="menuLinks" class="hidden md:flex space-x-8 text-lg">
+      <li><a href="index.html">🏠 Ana Sayfa</a></li>
+      <li><a href="oyun-isim.html">🧪 İsmini Elementlerle Yaz</a></li>
+      <li><a href="oyun.html">🎮 Eşleştirme Oyunu</a></li>
+    </ul>
+  </div>
+
+  <!-- Mobil Menü -->
+  <div id="mobileMenu" class="hidden md:hidden bg-[#0A2C38] px-4 pb-4">
+    <ul class="flex flex-col space-y-3 text-lg">
+      <li><a href="index.html">🏠 Ana Sayfa</a></li>
+      <li><a href="oyun-isim.html">🧪 İsmini Elementlerle Yaz</a></li>
+      <li><a href="oyun.html">🎮 Eşleştirme Oyunu</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="max-w-5xl mx-auto p-6 text-center">
+  <h1 class="text-3xl md:text-4xl font-black text-[#FFD166] mb-4">İsmini Elementlerle Yaz!</h1>
+  <p class="opacity-80 mb-6">Adını yaz, bakalım kaç element gizli içinde? 🌟</p>
+
+  <div class="flex flex-col md:flex-row justify-center items-center gap-3 mb-6">
+ <input id="studentName" type="text" maxlength="20" placeholder="Adınızı yazın (örnek: Serkan)"
+           class="text-black rounded px-4 py-2 w-60 text-center font-bold" />
+    <button id="generateNameCards"
+            class="bg-[#06D6A0] hover:bg-[#FFD166] text-[#0A2C38] font-bold px-4 py-2 rounded">✨ Oluştur</button>
+    <button id="downloadImage"
+            class="hidden bg-[#FFD166] hover:bg-[#06D6A0] text-[#0A2C38] font-bold px-4 py-2 rounded">⬇️ İndir</button>
+  </div>
+
+  <div id="resultInfo" class="text-lg text-[#FFD166] font-bold mb-3"></div>
+
+  <!-- İndirilecek alan -->
+  <div id="downloadArea" class="inline-block">
+    <div id="grid" class="cards-row"></div>
+    <div id="wm" class="watermark"></div>
+  </div>
+</main>
+
+     <footer class="text-center text-xs text-gray-400 py-8">
+            <p>© 2025 Mol Günü | Bu site, kimyayı sevdirmek amacıyla hazırlanmıştır.</p>
+        </footer>
+
+<script>
+  // 🔹 Aktif sayfayı otomatik algıla ve menüde vurgula
+  const currentPage = window.location.pathname.split("/").pop(); // örnek: oyun.html
+  document.querySelectorAll("nav a").forEach(a => {
+    const file = a.getAttribute("href");
+    if (file === currentPage || (currentPage === "" && file === "index.html")) {
+      a.classList.add("text-[#FFD166]", "font-bold");
+    } else {
+      a.classList.add("hover:text-[#FFD166]");
+    }
+  });
+
+  // 🔹 Mobil menü aç/kapat
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+
+// 🚫 Yasaklı kelimeler (Türkçe + İngilizce)
+const BAD_WORDS = [
+  // Türkçe
+  "amk","aq","orospu","sik","yarrak","piç","pezevenk","göt","kahpe","anan","sikerim",
+  "bok","salak","aptal","mal","gerizekalı","amına","siktir","puşt","oç",
+  "döl","sürtük","ibne","travesti","hayvan","kaltak","sokarım","taşşak","yarak",
+  "sikecem","amcı","gavat","o.ç","ananı","bacını","götün","ensest","tecavüz","porno",
+  // İngilizce
+  "fuck","shit","bitch","asshole","dick","pussy","cock","fucker","motherfucker",
+  "whore","slut","bastard","dumbass","faggot","cunt","jerk","retard","nigger","prick",
+  // Cinsel organ ve argo
+  "penis","vagina","boob","breast","butt","nipple","cum","ejaculate","sex","porn"
+];
+
+// ⚙️ Küfür kontrol fonksiyonu
+function containsBadWord(text){
+  const lower = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  return BAD_WORDS.some(bad => lower.includes(bad));
+}
+
+/* Grup görünen isimleri (tooltip için) */
+const GROUP_LABELS = {
+  alkali: "Alkali metal",
+  toprak: "Toprak alkali metal",
+  transition: "Geçiş metali",
+  metal: "Zayıf (post-) metal",
+  metalloid: "Metalloid (yarı metal)",
+  ametal: "Ametal",
+  halojen: "Halojen",
+  soygaz: "Soy gaz",
+  lantanit: "Lantanit",
+  aktinit: "Aktinit",
+  unknown: "Bilinmeyen/karma"
+};
+
+/* 118 ELEMENT – sembol, ad, grup */
+const ELEMENTS = [
+ {id:1,symbol:'H',name:'Hidrojen',group:'ametal'},
+ {id:2,symbol:'He',name:'Helyum',group:'soygaz'},
+ {id:3,symbol:'Li',name:'Lityum',group:'alkali'},
+ {id:4,symbol:'Be',name:'Berilyum',group:'toprak'},
+ {id:5,symbol:'B',name:'Bor',group:'metalloid'},
+ {id:6,symbol:'C',name:'Karbon',group:'ametal'},
+ {id:7,symbol:'N',name:'Azot',group:'ametal'},
+ {id:8,symbol:'O',name:'Oksijen',group:'ametal'},
+ {id:9,symbol:'F',name:'Flor',group:'halojen'},
+ {id:10,symbol:'Ne',name:'Neon',group:'soygaz'},
+ {id:11,symbol:'Na',name:'Sodyum',group:'alkali'},
+ {id:12,symbol:'Mg',name:'Magnezyum',group:'toprak'},
+ {id:13,symbol:'Al',name:'Alüminyum',group:'metal'},
+ {id:14,symbol:'Si',name:'Silisyum',group:'metalloid'},
+ {id:15,symbol:'P',name:'Fosfor',group:'ametal'},
+ {id:16,symbol:'S',name:'Kükürt',group:'ametal'},
+ {id:17,symbol:'Cl',name:'Klor',group:'halojen'},
+ {id:18,symbol:'Ar',name:'Argon',group:'soygaz'},
+ {id:19,symbol:'K',name:'Potasyum',group:'alkali'},
+ {id:20,symbol:'Ca',name:'Kalsiyum',group:'toprak'},
+ {id:21,symbol:'Sc',name:'Skandiyum',group:'transition'},
+ {id:22,symbol:'Ti',name:'Titanyum',group:'transition'},
+ {id:23,symbol:'V',name:'Vanadyum',group:'transition'},
+ {id:24,symbol:'Cr',name:'Krom',group:'transition'},
+ {id:25,symbol:'Mn',name:'Manganez',group:'transition'},
+ {id:26,symbol:'Fe',name:'Demir',group:'transition'},
+ {id:27,symbol:'Co',name:'Kobalt',group:'transition'},
+ {id:28,symbol:'Ni',name:'Nikel',group:'transition'},
+ {id:29,symbol:'Cu',name:'Bakır',group:'transition'},
+ {id:30,symbol:'Zn',name:'Çinko',group:'transition'},
+ {id:31,symbol:'Ga',name:'Galyum',group:'metal'},
+ {id:32,symbol:'Ge',name:'Germanyum',group:'metalloid'},
+ {id:33,symbol:'As',name:'Arsenik',group:'metalloid'},
+ {id:34,symbol:'Se',name:'Selenyum',group:'ametal'},
+ {id:35,symbol:'Br',name:'Brom',group:'halojen'},
+ {id:36,symbol:'Kr',name:'Kripton',group:'soygaz'},
+ {id:37,symbol:'Rb',name:'Rubidyum',group:'alkali'},
+ {id:38,symbol:'Sr',name:'Stronsiyum',group:'toprak'},
+ {id:39,symbol:'Y',name:'İtriyum',group:'transition'},
+ {id:40,symbol:'Zr',name:'Zirkonyum',group:'transition'},
+ {id:41,symbol:'Nb',name:'Niyobyum',group:'transition'},
+ {id:42,symbol:'Mo',name:'Molibden',group:'transition'},
+ {id:43,symbol:'Tc',name:'Teknesyum',group:'transition'},
+ {id:44,symbol:'Ru',name:'Rutenyum',group:'transition'},
+ {id:45,symbol:'Rh',name:'Rodyum',group:'transition'},
+ {id:46,symbol:'Pd',name:'Paladyum',group:'transition'},
+ {id:47,symbol:'Ag',name:'Gümüş',group:'transition'},
+ {id:48,symbol:'Cd',name:'Kadmiyum',group:'transition'},
+ {id:49,symbol:'In',name:'İndiyum',group:'metal'},
+ {id:50,symbol:'Sn',name:'Kalay',group:'metal'},
+ {id:51,symbol:'Sb',name:'Antimon',group:'metalloid'},
+ {id:52,symbol:'Te',name:'Tellür',group:'metalloid'},
+ {id:53,symbol:'I',name:'İyot',group:'halojen'},
+ {id:54,symbol:'Xe',name:'Ksenon',group:'soygaz'},
+ {id:55,symbol:'Cs',name:'Sezyum',group:'alkali'},
+ {id:56,symbol:'Ba',name:'Baryum',group:'toprak'},
+ {id:57,symbol:'La',name:'Lantan',group:'lantanit'},
+ {id:58,symbol:'Ce',name:'Seryum',group:'lantanit'},
+ {id:59,symbol:'Pr',name:'Praseodim',group:'lantanit'},
+ {id:60,symbol:'Nd',name:'Neodim',group:'lantanit'},
+ {id:61,symbol:'Pm',name:'Prometyum',group:'lantanit'},
+ {id:62,symbol:'Sm',name:'Samaryum',group:'lantanit'},
+ {id:63,symbol:'Eu',name:'Evropyum',group:'lantanit'},
+ {id:64,symbol:'Gd',name:'Gadolinyum',group:'lantanit'},
+ {id:65,symbol:'Tb',name:'Terbiyum',group:'lantanit'},
+ {id:66,symbol:'Dy',name:'Disprosyum',group:'lantanit'},
+ {id:67,symbol:'Ho',name:'Holmiyum',group:'lantanit'},
+ {id:68,symbol:'Er',name:'Erbiyum',group:'lantanit'},
+ {id:69,symbol:'Tm',name:'Tulyum',group:'lantanit'},
+ {id:70,symbol:'Yb',name:'İtterbiyum',group:'lantanit'},
+ {id:71,symbol:'Lu',name:'Lutesyum',group:'lantanit'},
+ {id:72,symbol:'Hf',name:'Hafniyum',group:'transition'},
+ {id:73,symbol:'Ta',name:'Tantal',group:'transition'},
+ {id:74,symbol:'W',name:'Tungsten',group:'transition'},
+ {id:75,symbol:'Re',name:'Renyum',group:'transition'},
+ {id:76,symbol:'Os',name:'Osmiyum',group:'transition'},
+ {id:77,symbol:'Ir',name:'İridyum',group:'transition'},
+ {id:78,symbol:'Pt',name:'Platin',group:'transition'},
+ {id:79,symbol:'Au',name:'Altın',group:'transition'},
+ {id:80,symbol:'Hg',name:'Cıva',group:'transition'},
+ {id:81,symbol:'Tl',name:'Talyum',group:'metal'},
+ {id:82,symbol:'Pb',name:'Kurşun',group:'metal'},
+ {id:83,symbol:'Bi',name:'Bizmut',group:'metal'},
+ {id:84,symbol:'Po',name:'Polonyum',group:'metal'},
+ {id:85,symbol:'At',name:'Astatin',group:'halojen'},
+ {id:86,symbol:'Rn',name:'Radon',group:'soygaz'},
+ {id:87,symbol:'Fr',name:'Fransiyum',group:'alkali'},
+ {id:88,symbol:'Ra',name:'Radyum',group:'toprak'},
+ {id:89,symbol:'Ac',name:'Aktinyum',group:'aktinit'},
+ {id:90,symbol:'Th',name:'Toryum',group:'aktinit'},
+ {id:91,symbol:'Pa',name:'Protaktinyum',group:'aktinit'},
+ {id:92,symbol:'U',name:'Uranyum',group:'aktinit'},
+ {id:93,symbol:'Np',name:'Neptünyum',group:'aktinit'},
+ {id:94,symbol:'Pu',name:'Plütonyum',group:'aktinit'},
+ {id:95,symbol:'Am',name:'Amerikyum',group:'aktinit'},
+ {id:96,symbol:'Cm',name:'Küriyum',group:'aktinit'},
+ {id:97,symbol:'Bk',name:'Berkelyum',group:'aktinit'},
+ {id:98,symbol:'Cf',name:'Kaliforniyum',group:'aktinit'},
+ {id:99,symbol:'Es',name:'Einsteinyum',group:'aktinit'},
+ {id:100,symbol:'Fm',name:'Fermiyum',group:'aktinit'},
+ {id:101,symbol:'Md',name:'Mendelevyum',group:'aktinit'},
+ {id:102,symbol:'No',name:'Nobelyum',group:'aktinit'},
+ {id:103,symbol:'Lr',name:'Lawrensiyum',group:'aktinit'},
+ {id:104,symbol:'Rf',name:'Rutherfordyum',group:'transition'},
+ {id:105,symbol:'Db',name:'Dubniyum',group:'transition'},
+ {id:106,symbol:'Sg',name:'Seaborgiyum',group:'transition'},
+ {id:107,symbol:'Bh',name:'Bohriyum',group:'transition'},
+ {id:108,symbol:'Hs',name:'Hassiyum',group:'transition'},
+ {id:109,symbol:'Mt',name:'Meitneryum',group:'transition'},
+ {id:110,symbol:'Ds',name:'Darmstadtiyum',group:'transition'},
+ {id:111,symbol:'Rg',name:'Röntgenyum',group:'transition'},
+ {id:112,symbol:'Cn',name:'Kopernikyum',group:'transition'},
+ {id:113,symbol:'Nh',name:'Nihonyum',group:'metal'},
+ {id:114,symbol:'Fl',name:'Flerovyum',group:'metal'},
+ {id:115,symbol:'Mc',name:'Moskavyum',group:'metal'},
+ {id:116,symbol:'Lv',name:'Livermoryum',group:'metal'},
+ {id:117,symbol:'Ts',name:'Tenesin',group:'halojen'},
+ {id:118,symbol:'Og',name:'Oganesson',group:'soygaz'}
+];
+
+/* İsmi elementlerle eşleştir */
+function nameToElements(name){
+  const s=name.toLowerCase();const out=[];let i=0;
+  while(i<s.length){
+    const two=s.slice(i,i+2),one=s[i];
+    const e2=ELEMENTS.find(e=>e.symbol.toLowerCase()===two);
+    const e1=ELEMENTS.find(e=>e.symbol.toLowerCase()===one);
+    if(e2){out.push(e2);i+=2;}
+    else if(e1){out.push(e1);i+=1;}
+    else{out.push({id:'-',symbol:one.toUpperCase(),name:'',missing:true});i+=1;}
+  }return out;
+}
+
+/* Kartları çiz */
+function renderElements(arr){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';document.getElementById('resultInfo').textContent=`🔹 Toplam ${arr.length} harf işlendi.`;
+  document.getElementById('downloadImage').classList.remove('hidden');
+  arr.forEach(e=>{
+    const cls=e.missing?'missing':('grp-'+(e.group||'unknown'));
+    const tip=e.missing?'Eşleşme yok':(GROUP_LABELS[e.group]||'Grup');
+    const c=document.createElement('div');
+    c.className=`card ${cls}`;c.title=tip;
+    c.innerHTML=`<div class="num">${e.missing?'':'Atom No: '+e.id}</div>
+      <div class="symbol">${e.symbol}</div>
+      <div class="name">${e.name}</div>`;
+    grid.appendChild(c);
+  });
+  document.getElementById('wm').textContent="";
+}
+
+/* Olaylar */
+document.getElementById('generateNameCards').addEventListener('click',()=>{
+  const name=document.getElementById('studentName').value.trim();
+  if(!name){alert('Lütfen adınızı girin.');return;}
+  if(containsBadWord(name)){
+    alert('⚠️ Uygunsuz kelime tespit edildi! Lütfen başka bir ad girin.');
+    document.getElementById('studentName').value='';return;
+  }
+  renderElements(nameToElements(name));
+});
+
+/* PNG indir */
+document.getElementById('downloadImage').addEventListener('click',()=>{
+  const name=(document.getElementById('studentName').value.trim()||'isim').replace(/\s+/g,'_');
+  html2canvas(document.getElementById('downloadArea'),{backgroundColor:'#073B4C',scale:2})
+    .then(canvas=>{
+      const a=document.createElement('a');
+      a.download=`${name}_molgunu.png`;
+      a.href=canvas.toDataURL('image/png');
+      a.click();
+    });
+});
+</script>
+</body>
+</html>
