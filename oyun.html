@@ -26,32 +26,36 @@
 </head>
 <body class="bg-[#073B4C] text-white">
 
-  <!-- 🧪 Navigasyon -->
-  <nav class="bg-[#0A2C38] fixed top-0 left-0 w-full z-50 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-      <a href="/" class="text-2xl font-bold text-[#06D6A0]">Mol Günü</a>
-      <button id="menuBtn" class="md:hidden focus:outline-none">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-      <ul id="menuLinks" class="hidden md:flex space-x-8 text-lg">
-        <li><a href="/" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
-        <li><a href="/" class="hover:text-[#FFD166]">Grafikler</a></li>
-        <li><a href="/" class="hover:text-[#FFD166]">Kutlama</a></li>
-        <li><a href="oyun.html" class="text-[#FFD166] font-bold">🎮 Oyun</a></li>
-      </ul>
-    </div>
-    <div id="mobileMenu" class="hidden md:hidden bg-[#0A2C38] px-4 pb-4">
-      <ul class="flex flex-col space-y-3 text-lg">
-        <li><a href="/" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
-        <li><a href="/" class="hover:text-[#FFD166]">Grafikler</a></li>
-        <li><a href="/" class="hover:text-[#FFD166]">Kutlama</a></li>
-        <li><a href="oyun.html" class="text-[#FFD166] font-bold">🎮 Oyun</a></li>
-      </ul>
-    </div>
-  </nav>
+<nav class="bg-[#0A2C38] text-white fixed top-0 left-0 w-full z-50 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <a href="index.html" class="text-2xl font-bold text-[#06D6A0]">Mol Günü</a>
 
+    <!-- Mobil menü butonu -->
+    <button id="menuBtn" class="md:hidden focus:outline-none">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" 
+           viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" 
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <!-- Masaüstü Menü -->
+    <ul id="menuLinks" class="hidden md:flex space-x-8 text-lg">
+      <li><a href="index.html">🏠 Ana Sayfa</a></li>
+      <li><a href="isim-oyun.html">🧪 İsmini Elementlerle Yaz</a></li>
+      <li><a href="oyun.html">🎮 Eşleştirme Oyunu</a></li>
+    </ul>
+  </div>
+
+  <!-- Mobil Menü -->
+  <div id="mobileMenu" class="hidden md:hidden bg-[#0A2C38] px-4 pb-4">
+    <ul class="flex flex-col space-y-3 text-lg">
+      <li><a href="index.html">🏠 Ana Sayfa</a></li>
+      <li><a href="isim-oyun.html">🧪 İsmini Elementlerle Yaz</a></li>
+      <li><a href="oyun.html">🎮 Eşleştirme Oyunu</a></li>
+    </ul>
+  </div>
+</nav>
   <!-- 🎮 Oyun Alanı -->
   <main class="max-w-5xl mx-auto p-6">
     <h1 class="text-3xl md:text-4xl font-black text-[#FFD166] text-center mb-6">Kimya Eşleştirme Oyunu <span class="text-sm opacity-70">(Sembol ⇄ İsim)</span></h1>
@@ -108,3 +112,4 @@
   </script>
 </body>
 </html>
+
