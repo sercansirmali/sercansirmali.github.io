@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎮 Kimya Eşleştirme Oyunu | Mol Günü</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #073B4C;
+      --panel: #118AB2;
+      --text: #FFFFFF;
+      --accent: #06D6A0;
+      --highlight: #FFD166;
+      --error: #EF476F;
+      --card-back: #0A2C38;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at 30% -10%, #118AB2 0%, #073B4C 60%, #041e26 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Üst Menü */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: #0A2C38;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 50;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    nav a {
+      color: var(--highlight);
+      text-decoration: none;
+      font-weight: 700;
+      margin-right: 16px;
+      transition: color .2s;
+    }
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 80px 20px 40px;
+    }
+
+    .wrap {
+      width: min(1100px, 100%);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(22px, 2.6vw, 36px);
+      margin: 0;
+      color: var(--highlight);
+      text-shadow: 0 0 6px rgba(255,255,255,0.3);
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button, select {
+      background: var(--card-back);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover, select:hover {
+      background: var(--accent);
+      color: #0A2C38;
+      border-color: transparent;
+    }
+
+    .panel {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      gap: 12px;
+      place-items: center;
+      margin-top: 12px;
+    }
+    .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+    .grid.cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+    /* Kartlar */
+    .card {
+      width: 110px;
+      height: 140px;
+      position: relative;
+      perspective: 1000px;
+    }
+    .inner {
+      position: absolute;
+      inset: 0;
+      transition: transform .5s cubic-bezier(.2,.7,.2,1);
+      transform-style: preserve-3d;
+      border-radius: 14px;
+    }
+    .flipped .inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      backface-visibility: hidden;
+    }
+    .front {
+      background: var(--accent);
+      color: #0A2C38;
+      font-weight: 700;
+      font-size: 48px;
+    }
+    .back {
+      background: var(--card-back);
+      transform: rotateY(180deg);
+      padding: 10px;
+      text-align: center;
+    }
+
+    .badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(0,0,0,0.4);
+    }
+
+    .type-symbol .front { background: var(--accent); color: #0A2C38; }
+    .type-name .front { background: var(--highlight); color: #0A2C38; }
+
+    .matched {
+      opacity: .3;
+      filter: saturate(.4) brightness(.8);
+      pointer-events: none;
+    }
+
+    .stats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .stat {
+      padding: 8px 12px;
+      background: var(--card-back);
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+    .progress {
+      height: 10px;
+      width: 100%;
+      background: var(--card-back);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--highlight));
+      width: 0;
+      transition: width 0.3s ease;
+    }
+
+    footer {
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      padding-bottom: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .card { width: 86px; height: 112px; }
+      .front { font-size: 36px; }
+      .grid.cols-6 { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Üst Menü -->
+  <nav>
+    <div class="logo font-bold text-xl text-[#06D6A0]">Mol Günü 🎉</div>
+    <div class="links">
+      <a href="index.html">🏠 Ana Sayfa</a>
+      <a href="oyun-quiz.html">❓ Mol Quiz</a>
+      <a href="oyun-lab.html">🧪 Laboratuvar Kaçışı</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <header>
+        <h1>Kimya Eşleştirme Oyunu <small style="opacity:.7; font-size:.6em">(Sembol ⇄ İsim)</small></h1>
+        <div class="controls">
+          <select id="level">
+            <option value="8">Kolay (8 kart = 4 çift)</option>
+            <option value="12">Orta (12 kart = 6 çift)</option>
+            <option value="20">Zor (20 kart = 10 çift)</option>
+            <option value="24">Usta (24 kart = 12 çift)</option>
+          </select>
+          <button id="restart">↻ Yeniden Başlat</button>
+        </div>
+      </header>
+
+      <div class="panel">
+        <div class="stats">
+          <div class="stat">⏱️ Süre: <b id="time">00:00</b></div>
+          <div class="stat">🎯 Hamle: <b id="moves">0</b></div>
+          <div class="stat">🏆 En İyi: <b id="best">—</b></div>
+        </div>
+        <div id="grid" class="grid cols-4" aria-live="polite"></div>
+        <div class="foot">
+          <div class="progress"><span id="prog"></span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 Mol Günü | Pamukkale Üniversitesi Kimya Etkinliği</footer>
+
+  <script>
+    const ELEMENTS = [
+      { id: 1, symbol: 'H', name: 'Hidrojen' },
+      { id: 2, symbol: 'He', name: 'Helyum' },
+      { id: 3, symbol: 'Li', name: 'Lityum' },
+      { id: 4, symbol: 'Be', name: 'Berilyum' },
+      { id: 5, symbol: 'B', name: 'Bor' },
+      { id: 6, symbol: 'C', name: 'Karbon' },
+      { id: 7, symbol: 'N', name: 'Azot' },
+      { id: 8, symbol: 'O', name: 'Oksijen' },
+      { id: 9, symbol: 'F', name: 'Flor' },
+      { id:10, symbol: 'Ne', name: 'Neon' },
+      { id:11, symbol: 'Na', name: 'Sodyum' },
+      { id:12, symbol: 'Mg', name: 'Magnezyum' },
+      { id:13, symbol: 'Al', name: 'Alüminyum' },
+      { id:14, symbol: 'Si', name: 'Silisyum' },
+      { id:15, symbol: 'P', name: 'Fosfor' },
+      { id:16, symbol: 'S', name: 'Kükürt' },
+      { id:17, symbol: 'Cl', name: 'Klor' },
+      { id:18, symbol: 'Ar', name: 'Argon' },
+      { id:19, symbol: 'K', name: 'Potasyum' },
+      { id:20, symbol: 'Ca', name: 'Kalsiyum' },
+      { id:26, symbol: 'Fe', name: 'Demir' },
+      { id:29, symbol: 'Cu', name: 'Bakır' },
+      { id:30, symbol: 'Zn', name: 'Çinko' },
+      { id:47, symbol: 'Ag', name: 'Gümüş' },
+      { id:79, symbol: 'Au', name: 'Altın' },
+    ];
+
+    let first = null, lock = false, moves = 0, matched = 0, totalPairs = 0;
+    let timer = null, seconds = 0; 
+
+    const grid = document.getElementById('grid');
+    const timeEl = document.getElementById('time');
+    const movesEl = document.getElementById('moves');
+    const bestEl = document.getElementById('best');
+    const levelSel = document.getElementById('level');
+    const restartBtn = document.getElementById('restart');
+    const prog = document.getElementById('prog');
+
+    const pad = n => (n < 10 ? '0' + n : '' + n);
+    const fmt = s => `${pad(Math.floor(s/60))}:${pad(s%60)}`;
+    const shuffle = arr => arr.sort(() => Math.random() - 0.5);
+
+    function startTimer() {
+      clearInterval(timer);
+      seconds = 0;
+      timeEl.textContent = fmt(seconds);
+      timer = setInterval(() => {
+        seconds++; timeEl.textContent = fmt(seconds);
+      }, 1000);
+    }
+
+    function stopTimer() { clearInterval(timer); }
+
+    function saveBest() {
+      const key = `chem-best-${levelSel.value}`;
+      const best = parseInt(localStorage.getItem(key)||'0',10);
+      if (!best || seconds < best) {
+        localStorage.setItem(key, seconds.toString());
+      }
+      bestEl.textContent = localStorage.getItem(key) ? fmt(parseInt(localStorage.getItem(key),10)) : '—';
+    }
+
+    function loadBest() {
+      const key = `chem-best-${levelSel.value}`;
+      bestEl.textContent = localStorage.getItem(key) ? fmt(parseInt(localStorage.getItem(key),10)) : '—';
+    }
+
+    function buildDeck(size) {
+      const pairCount = size / 2;
+      totalPairs = pairCount;
+      matched = 0; moves = 0; movesEl.textContent = '0';
+      prog.style.width = '0%';
+      const pool = shuffle(ELEMENTS.slice()).slice(0, pairCount);
+      const deck = pool.flatMap(el => ([
+        { id: el.id, type: 'symbol', label: el.symbol },
+        { id: el.id, type: 'name', label: el.name }
+      ]));
+      return shuffle(deck);
+    }
+
+    function setGridCols(size) {
+      grid.classList.remove('cols-4','cols-5','cols-6');
+      if(size <= 12) grid.classList.add('cols-4');
+      else if(size <= 20) grid.classList.add('cols-5');
+      else grid.classList.add('cols-6');
+    }
+
+    function render(size = 12) {
+      setGridCols(size);
+      grid.innerHTML = '';
+      const deck = buildDeck(size);
+      deck.forEach(cardData => {
+        const card = document.createElement('div');
+        card.className = `card type-${cardData.type}`;
+        card.dataset.id = cardData.id;
+        card.dataset.type = cardData.type;
+        card.innerHTML = `
+          <div class="inner">
+            <div class="face front">?
+              <span class="badge">${cardData.type === 'symbol' ? 'Sembol' : 'İsim'}</span>
+            </div>
+            <div class="face back">
+              <div>
+                <div style="font-size:${cardData.type==='symbol'?'48px':'20px'}; font-weight:700;">${cardData.label}</div>
+                <div style="opacity:.7; font-size:12px; margin-top:6px">${cardData.type==='symbol'?'Element Sembolü':'Element Adı'}</div>
+              </div>
+            </div>
+          </div>`;
+        card.addEventListener('click', () => onFlip(card));
+        grid.appendChild(card);
+      });
+      first = null; lock = false;
+      startTimer();
+      loadBest();
+    }
+
+    function onFlip(card) {
+      if (lock || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+      card.classList.add('flipped');
+      if (!first) { first = card; return; }
+      moves++; movesEl.textContent = moves;
+      const sameId = first.dataset.id === card.dataset.id;
+      const diffType = first.dataset.type !== card.dataset.type;
+
+      if (sameId && diffType) {
+        setTimeout(() => {
+          first.classList.add('matched');
+          card.classList.add('matched');
+          first = null; matched++;
+          const pct = Math.round((matched / totalPairs) * 100);
+          prog.style.width = pct + '%';
+          if (matched === totalPairs) { stopTimer(); saveBest(); celebrate(); }
+        }, 200);
+      } else {
+        lock = true;
+        setTimeout(() => {
+          first.classList.remove('flipped');
+          card.classList.remove('flipped');
+          first = null; lock = false;
+        }, 700);
+      }
+    }
+
+    function celebrate() {
+      const conf = document.createElement('div');
+      conf.style.position = 'fixed'; conf.style.inset = '0'; conf.style.pointerEvents = 'none';
+      document.body.appendChild(conf);
+      const N = 80;
+      for (let i = 0; i < N; i++) {
+        const s = document.createElement('span');
+        s.textContent = '✦';
+        s.style.position = 'absolute';
+        s.style.left = Math.random()*100+'%';
+        s.style.top = '-20px';
+        s.style.fontSize = (12 + Math.random()*18)+'px';
+        s.style.opacity = .9;
+        s.style.transition = 'transform 1.2s ease-out, opacity 1.2s';
+        conf.appendChild(s);
+        requestAnimationFrame(() => {
+          s.style.transform = `translateY(${110+Math.random()*30}vh) rotate(${(Math.random()*360)|0}deg)`;
