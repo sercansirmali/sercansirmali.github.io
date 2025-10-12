@@ -130,8 +130,13 @@
     levelSel.addEventListener("change",()=>render(parseInt(levelSel.value,10)));
     restartBtn.addEventListener("click",()=>render(parseInt(levelSel.value,10)));
     window.addEventListener("DOMContentLoaded",()=>render(parseInt(levelSel.value,10)));
+    // Oyun başlat
+window.addEventListener("DOMContentLoaded", () => {
+  render(parseInt(levelSel.value, 10));
+});
   </script>
 </body>
 </html>
+
 
 
