@@ -12,6 +12,7 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
+            padding-top: 64px; /* sabit menü için boşluk */
         }
         .chart-container {
             position: relative;
@@ -31,9 +32,39 @@
 </head>
 <body class="bg-[#073B4C] text-white">
 
+    <!-- 🧪 Navigasyon Menüsü -->
+    <nav class="bg-[#0A2C38] text-white fixed top-0 left-0 w-full z-50 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+        <a href="/" class="text-2xl font-bold text-[#06D6A0]">Mol Günü</a>
+        <button id="menuBtn" class="md:hidden focus:outline-none">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" 
+               viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <ul id="menuLinks" class="hidden md:flex space-x-8 text-lg">
+          <li><a href="#mol" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
+          <li><a href="#grafik" class="hover:text-[#FFD166]">Grafikler</a></li>
+          <li><a href="#kutlama" class="hover:text-[#FFD166]">Kutlama</a></li>
+          <li><a href="oyun.html" class="hover:text-[#FFD166] font-bold">🎮 Oyun</a></li>
+        </ul>
+      </div>
+
+      <!-- Mobil Menü -->
+      <div id="mobileMenu" class="hidden md:hidden bg-[#0A2C38] px-4 pb-4">
+        <ul class="flex flex-col space-y-3 text-lg">
+          <li><a href="#mol" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
+          <li><a href="#grafik" class="hover:text-[#FFD166]">Grafikler</a></li>
+          <li><a href="#kutlama" class="hover:text-[#FFD166]">Kutlama</a></li>
+          <li><a href="oyun.html" class="hover:text-[#FFD166] font-bold">🎮 Oyun</a></li>
+        </ul>
+      </div>
+    </nav>
+
     <div class="container mx-auto p-4 md:p-8">
 
-        <header class="text-center my-12">
+        <header class="text-center my-12" id="mol">
             <h1 class="text-5xl md:text-7xl font-black text-[#06D6A0] uppercase tracking-wider">Mol Günü</h1>
             <p class="text-xl md:text-2xl text-[#FFD166] mt-2 font-bold">Kimyanın En Özel Sayısını Kutluyoruz!</p>
         </header>
@@ -52,7 +83,7 @@
                 <p class="mt-6 text-sm italic">Bu özel günü, sayının yazılışından ilhamla her yıl 23 Ekim (10/23) saat 6:02'den itibaren kutlarız!</p>
             </section>
             
-            <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center" id="grafik">
                 <div class="bg-white/10 rounded-2xl shadow-xl p-6">
                     <h3 class="text-2xl font-bold mb-4 text-center text-[#FFD166]">Sayıların Gücü Adına!</h3>
                     <p class="mb-4">Bir molün ne kadar devasa bir sayı olduğunu daha iyi anlamak için, onu günlük hayattan bildiğimiz sayılarla karşılaştıralım. Bu grafik, "bir mol"ün basamak sayısı olarak diğerlerinden ne kadar üstün olduğunu gösteriyor.</p>
@@ -83,20 +114,17 @@
                 </div>
             </section>
             
- 
-
-            <section class="text-center bg-white/10 rounded-2xl p-8">
+            <section class="text-center bg-white/10 rounded-2xl p-8" id="kutlama">
                  <h2 class="text-2xl font-bold mb-4 text-[#FFD166]">Kaçırmayın!</h2>
                 <div class="text-xl space-y-3">
                     <p><b class="text-[#06D6A0]">Tarih:</b> 23 Ekim</p>               
-          
                 </div>
                 <p class="text-2xl font-bold mt-8">Tüm kimya meraklılarının Mol Günü kutlu olsun!</p>
           
                 <div class="mt-6 flex flex-col md:flex-row justify-center items-center gap-6">
-    <img src="images/isim.png" alt="Kimya görsel 1" class="w-[250px] h-[250px] object-cover rounded-lg shadow-lg">
-    <img src="images/isim2.png" alt="Kimya görsel 2" class="w-[250px] h-[250px] object-cover rounded-lg shadow-lg">
-</div>
+                    <img src="images/isim.png" alt="Kimya görsel 1" class="w-[250px] h-[250px] object-cover rounded-lg shadow-lg">
+                    <img src="images/isim2.png" alt="Kimya görsel 2" class="w-[250px] h-[250px] object-cover rounded-lg shadow-lg">
+                </div>
             </section>
 
         </main>
@@ -107,144 +135,105 @@
     </div>
 
     <script>
-        const vibrantPalette = ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'];
-        const textLight = '#FFFFFF';
-        const textDark = '#073B4C';
+      // Hamburger menü aç/kapat
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
 
-        function wrapLabel(label, maxLength = 16) {
-            if (label.length <= maxLength) {
-                return label;
-            }
-            const words = label.split(' ');
-            const lines = [];
-            let currentLine = '';
-            for (const word of words) {
-                if ((currentLine + word).length > maxLength) {
-                    lines.push(currentLine.trim());
-                    currentLine = '';
-                }
-                currentLine += word + ' ';
-            }
-            lines.push(currentLine.trim());
-            return lines;
-        }
+      const vibrantPalette = ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'];
+      const textLight = '#FFFFFF';
+      const textDark = '#073B4C';
 
-        const tooltipTitleCallback = (tooltipItems) => {
-            const item = tooltipItems[0];
-            let label = item.chart.data.labels[item.dataIndex];
-            if (Array.isArray(label)) {
-                return label.join(' ');
-            } else {
-                return label;
-            }
-        };
-        
-        const defaultChartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textLight,
-                        font: {
-                            size: 14
-                        }
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        title: tooltipTitleCallback
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { color: textLight },
-                    grid: { color: 'rgba(255, 255, 255, 0.2)' }
-                },
-                x: {
-                    ticks: { color: textLight },
-                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
-                }
-            }
-        };
+      function wrapLabel(label, maxLength = 16) {
+          if (label.length <= maxLength) {
+              return label;
+          }
+          const words = label.split(' ');
+          const lines = [];
+          let currentLine = '';
+          for (const word of words) {
+              if ((currentLine + word).length > maxLength) {
+                  lines.push(currentLine.trim());
+                  currentLine = '';
+              }
+              currentLine += word + ' ';
+          }
+          lines.push(currentLine.trim());
+          return lines;
+      }
 
-        const comparisonCanvas = document.getElementById('comparisonChart');
-        if (comparisonCanvas) {
-            const comparisonCtx = comparisonCanvas.getContext('2d');
-            new Chart(comparisonCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Bir Deste', 'Bir Düzine', 'Bir Mol'],
-                    datasets: [{
-                        label: 'Yaklaşık Basamak Sayısı (10^x)',
-                        data: [1, 1.08, 23],
-                        backgroundColor: vibrantPalette,
-                        borderColor: vibrantPalette.map(c => c + 'CC'),
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    ...defaultChartOptions,
-                    plugins: {
-                         legend: { display: false },
-                         tooltip: {
-                            callbacks: {
-                                title: tooltipTitleCallback
-                            }
-                        }
-                    }
-                }
-            });
-        }
+      const tooltipTitleCallback = (tooltipItems) => {
+          const item = tooltipItems[0];
+          let label = item.chart.data.labels[item.dataIndex];
+          if (Array.isArray(label)) {
+              return label.join(' ');
+          } else {
+              return label;
+          }
+      };
+      
+      const defaultChartOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+              legend: {
+                  labels: {
+                      color: textLight,
+                      font: {
+                          size: 14
+                      }
+                  }
+              },
+              tooltip: {
+                  callbacks: {
+                      title: tooltipTitleCallback
+                  }
+              }
+          },
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  ticks: { color: textLight },
+                  grid: { color: 'rgba(255, 255, 255, 0.2)' }
+              },
+              x: {
+                  ticks: { color: textLight },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+              }
+          }
+      };
 
-        const activityCanvas = document.getElementById('activityChart');
-        if (activityCanvas) {
-            const activityCtx = activityCanvas.getContext('2d');
-            const activityLabels = [
-                'Bilim Şovları ve Deneyler',
-                'Ödüllü Bilgi Yarışması',
-                'Mol Temalı İkramlar',
-                'Afiş ve Molekül Tasarım Atölyesi'
-            ];
-            
-            new Chart(activityCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: activityLabels.map(label => wrapLabel(label)),
-                    datasets: [{
-                        label: 'Etkinlikler',
-                        data: [25, 25, 25, 25],
-                        backgroundColor: vibrantPalette,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    ...defaultChartOptions,
-                    scales: {
-                       y: { display: false },
-                       x: { display: false }
-                    },
-                    plugins: {
-                         legend: { 
-                            position: 'bottom',
-                            labels: {
-                                color: textLight,
-                                font: { size: 12 }
-                            }
-                         },
-                         tooltip: {
-                            callbacks: {
-                                title: tooltipTitleCallback
-                            }
-                        }
-                    }
-                }
-            });
-        }
+      const comparisonCanvas = document.getElementById('comparisonChart');
+      if (comparisonCanvas) {
+          const comparisonCtx = comparisonCanvas.getContext('2d');
+          new Chart(comparisonCtx, {
+              type: 'bar',
+              data: {
+                  labels: ['Bir Deste', 'Bir Düzine', 'Bir Mol'],
+                  datasets: [{
+                      label: 'Yaklaşık Basamak Sayısı (10^x)',
+                      data: [1, 1.08, 23],
+                      backgroundColor: vibrantPalette,
+                      borderColor: vibrantPalette.map(c => c + 'CC'),
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  ...defaultChartOptions,
+                  plugins: {
+                      legend: { display: false },
+                      tooltip: {
+                          callbacks: {
+                              title: tooltipTitleCallback
+                          }
+                      }
+                  }
+              }
+          });
+      }
     </script>
 
 </body>
 </html>
-
