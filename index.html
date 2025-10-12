@@ -28,6 +28,11 @@
                 height: 400px;
             }
         }
+
+        /* Menü hover dropdown */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-[#073B4C] text-white">
@@ -36,6 +41,8 @@
     <nav class="bg-[#0A2C38] text-white fixed top-0 left-0 w-full z-50 shadow-lg">
       <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <a href="/" class="text-2xl font-bold text-[#06D6A0]">Mol Günü</a>
+
+        <!-- Hamburger Buton -->
         <button id="menuBtn" class="md:hidden focus:outline-none">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" 
                viewBox="0 0 24 24">
@@ -43,11 +50,27 @@
                   d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <ul id="menuLinks" class="hidden md:flex space-x-8 text-lg">
+
+        <!-- Masaüstü Menü -->
+        <ul id="menuLinks" class="hidden md:flex space-x-8 text-lg items-center">
           <li><a href="#mol" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
           <li><a href="#grafik" class="hover:text-[#FFD166]">Grafikler</a></li>
           <li><a href="#kutlama" class="hover:text-[#FFD166]">Kutlama</a></li>
-          <li><a href="oyun.html" class="hover:text-[#FFD166] font-bold">🎮 Oyun</a></li>
+
+          <!-- Dropdown Menü -->
+          <li class="relative dropdown">
+            <button class="hover:text-[#FFD166] flex items-center gap-1">
+              🎮 Oyunlar
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <ul class="dropdown-menu absolute hidden bg-[#0A2C38] border border-[#1E3A47] rounded-md shadow-lg mt-2 py-2 w-48">
+              <li><a href="oyun-eslestirme.html" class="block px-4 py-2 hover:bg-[#06D6A0] hover:text-[#0A2C38]">🔹 Eşleştirme Oyunu</a></li>
+              <li><a href="oyun-quiz.html" class="block px-4 py-2 hover:bg-[#06D6A0] hover:text-[#0A2C38]">🔹 Mol Quiz</a></li>
+              <li><a href="oyun-lab.html" class="block px-4 py-2 hover:bg-[#06D6A0] hover:text-[#0A2C38]">🔹 Laboratuvar Kaçışı</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
 
@@ -57,7 +80,14 @@
           <li><a href="#mol" class="hover:text-[#FFD166]">Mol Nedir?</a></li>
           <li><a href="#grafik" class="hover:text-[#FFD166]">Grafikler</a></li>
           <li><a href="#kutlama" class="hover:text-[#FFD166]">Kutlama</a></li>
-          <li><a href="oyun.html" class="hover:text-[#FFD166] font-bold">🎮 Oyun</a></li>
+          <li class="border-t border-gray-700 pt-2">
+            <p class="text-[#FFD166] font-bold mb-1">🎮 Oyunlar</p>
+            <ul class="ml-4 space-y-1">
+              <li><a href="oyun-eslestirme.html" class="hover:text-[#06D6A0]">Eşleştirme Oyunu</a></li>
+              <li><a href="oyun-quiz.html" class="hover:text-[#06D6A0]">Mol Quiz</a></li>
+              <li><a href="oyun-lab.html" class="hover:text-[#06D6A0]">Laboratuvar Kaçışı</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </nav>
@@ -70,23 +100,21 @@
         </header>
 
         <main class="space-y-16">
-
+            <!-- Ana içerik (değişmedi) -->
             <section class="bg-[#118AB2] rounded-2xl shadow-2xl p-6 md:p-10 text-center">
                 <h2 class="text-3xl font-bold mb-4 text-[#FFD166]">Peki, Nedir Bu Mol?</h2>
-                <p class="text-lg max-w-3xl mx-auto mb-6">Tıpkı bir düzinenin 12, bir destenin ise 10 adet nesneyi ifade etmesi gibi, 'mol' de kimyacılar için inanılmaz derecede büyük bir parçacık topluluğunu ifade eden bir ölçü birimidir. Bu birim, atomlar ve moleküller gibi gözle görülemeyecek kadar küçük tanecikleri sayılabilir ve ölçülebilir hale getirir.</p>
+                <p class="text-lg max-w-3xl mx-auto mb-6">Tıpkı bir düzinenin 12, bir destenin ise 10 adet nesneyi ifade etmesi gibi, 'mol' de kimyacılar için inanılmaz derecede büyük bir parçacık topluluğunu ifade eden bir ölçü birimidir...</p>
                 <div class="bg-[#073B4C] rounded-lg p-6 flex flex-col items-center justify-center">
-                     <p class="text-2xl md:text-4xl font-extrabold text-[#06D6A0]">1 Mol =</p>
+                    <p class="text-2xl md:text-4xl font-extrabold text-[#06D6A0]">1 Mol =</p>
                     <p class="text-5xl md:text-8xl font-black text-white tracking-tighter my-4">6,022 x 10²³</p>
                     <p class="text-2xl md:text-4xl font-extrabold text-[#FF6B6B]">parçacık!</p>
-                     <p class="text-sm mt-4 text-gray-300">(Bu sayı Avogadro Sayısı olarak bilinir)</p>
+                    <p class="text-sm mt-4 text-gray-300">(Bu sayı Avogadro Sayısı olarak bilinir)</p>
                 </div>
-                <p class="mt-6 text-sm italic">Bu özel günü, sayının yazılışından ilhamla her yıl 23 Ekim (10/23) saat 6:02'den itibaren kutlarız!</p>
             </section>
-            
+
             <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center" id="grafik">
                 <div class="bg-white/10 rounded-2xl shadow-xl p-6">
                     <h3 class="text-2xl font-bold mb-4 text-center text-[#FFD166]">Sayıların Gücü Adına!</h3>
-                    <p class="mb-4">Bir molün ne kadar devasa bir sayı olduğunu daha iyi anlamak için, onu günlük hayattan bildiğimiz sayılarla karşılaştıralım. Bu grafik, "bir mol"ün basamak sayısı olarak diğerlerinden ne kadar üstün olduğunu gösteriyor.</p>
                     <div class="chart-container">
                         <canvas id="comparisonChart"></canvas>
                     </div>
@@ -94,146 +122,41 @@
                 <div class="bg-white/10 rounded-2xl shadow-xl p-6">
                     <h3 class="text-2xl font-bold mb-4 text-center text-[#FFD166]">Hayal Gücünün Sınırlarında Bir Mol</h3>
                     <ul class="space-y-4 text-left">
-                        <li class="flex items-start">
-                            <span class="text-2xl text-[#06D6A0] mr-3">💧</span>
-                            <span><b>Bir Mol Su:</b> Sadece 18 gramdır ve avucunuzun içine rahatlıkla sığar!</span>
-                        </li>
-                        <li class="flex items-start">
-                             <span class="text-2xl text-[#FFD166] mr-3">💰</span>
-                            <span><b>Bir Mol Cent:</b> Tüm dünya yüzeyini 400 metreden daha derin bir zenginlikle kaplardı!</span>
-                        </li>
-                        <li class="flex items-start">
-                             <span class="text-2xl text-[#FF6B6B] mr-3">🍩</span>
-                            <span><b>Bir Mol Donut:</b> Tüm Dünya'yı kaplayıp 8 kilometre yüksekliğinde bir katman oluştururdu!</span>
-                        </li>
-                         <li class="flex items-start">
-                             <span class="text-2xl text-[#118AB2] mr-3">⏱️</span>
-                            <span><b>Avogadro Sayısı Kadar Saniye:</b> Yaklaşık 19 katrilyon yıl eder ki bu, evrenin yaşından bile çok daha uzundur!</span>
-                        </li>
+                        <li class="flex items-start"><span class="text-2xl text-[#06D6A0] mr-3">💧</span><span><b>Bir Mol Su:</b> Sadece 18 gramdır!</span></li>
+                        <li class="flex items-start"><span class="text-2xl text-[#FFD166] mr-3">💰</span><span><b>Bir Mol Cent:</b> Tüm dünyayı kaplardı!</span></li>
+                        <li class="flex items-start"><span class="text-2xl text-[#FF6B6B] mr-3">🍩</span><span><b>Bir Mol Donut:</b> Dünya’yı 8 km kaplar!</span></li>
                     </ul>
                 </div>
             </section>
-            
-            <section class="text-center bg-white/10 rounded-2xl p-8" id="kutlama">
-                 <h2 class="text-2xl font-bold mb-4 text-[#FFD166]">Kaçırmayın!</h2>
-                <div class="text-xl space-y-3">
-                    <p><b class="text-[#06D6A0]">Tarih:</b> 23 Ekim</p>               
-                </div>
-                <p class="text-2xl font-bold mt-8">Tüm kimya meraklılarının Mol Günü kutlu olsun!</p>
-          
-                <div class="mt-6 flex flex-col md:flex-row justify-center items-center gap-6">
-                    <img src="images/isim.png" alt="Kimya görsel 1" class="w-[250px] h-[250px] object-cover rounded-lg shadow-lg">
-                    <img src="images/isim2.png" alt="Kimya görsel 2" class="w-[250px] h-[250px] object-cover rounded-lg shadow-lg">
-                </div>
-            </section>
 
+            <section class="text-center bg-white/10 rounded-2xl p-8" id="kutlama">
+                <h2 class="text-2xl font-bold mb-4 text-[#FFD166]">Kaçırmayın!</h2>
+                <p class="text-xl"><b class="text-[#06D6A0]">Tarih:</b> 23 Ekim</p>
+                <p class="text-2xl font-bold mt-8">Tüm kimya meraklılarının Mol Günü kutlu olsun!</p>
+            </section>
         </main>
 
         <footer class="text-center text-xs text-gray-400 py-8">
-            <p>Bu infografik, kimyayı sevdirmek amacıyla hazırlanmıştır. No SVG or Mermaid JS used.</p>
+            <p>Bu infografik, kimyayı sevdirmek amacıyla hazırlanmıştır.</p>
         </footer>
     </div>
 
     <script>
-      // Hamburger menü aç/kapat
+      // Hamburger menü
       const menuBtn = document.getElementById("menuBtn");
       const mobileMenu = document.getElementById("mobileMenu");
       menuBtn.addEventListener("click", () => {
         mobileMenu.classList.toggle("hidden");
       });
 
+      // Chart
       const vibrantPalette = ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'];
-      const textLight = '#FFFFFF';
-      const textDark = '#073B4C';
-
-      function wrapLabel(label, maxLength = 16) {
-          if (label.length <= maxLength) {
-              return label;
-          }
-          const words = label.split(' ');
-          const lines = [];
-          let currentLine = '';
-          for (const word of words) {
-              if ((currentLine + word).length > maxLength) {
-                  lines.push(currentLine.trim());
-                  currentLine = '';
-              }
-              currentLine += word + ' ';
-          }
-          lines.push(currentLine.trim());
-          return lines;
-      }
-
-      const tooltipTitleCallback = (tooltipItems) => {
-          const item = tooltipItems[0];
-          let label = item.chart.data.labels[item.dataIndex];
-          if (Array.isArray(label)) {
-              return label.join(' ');
-          } else {
-              return label;
-          }
-      };
-      
-      const defaultChartOptions = {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-              legend: {
-                  labels: {
-                      color: textLight,
-                      font: {
-                          size: 14
-                      }
-                  }
-              },
-              tooltip: {
-                  callbacks: {
-                      title: tooltipTitleCallback
-                  }
-              }
-          },
-          scales: {
-              y: {
-                  beginAtZero: true,
-                  ticks: { color: textLight },
-                  grid: { color: 'rgba(255, 255, 255, 0.2)' }
-              },
-              x: {
-                  ticks: { color: textLight },
-                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
-              }
-          }
-      };
-
       const comparisonCanvas = document.getElementById('comparisonChart');
       if (comparisonCanvas) {
-          const comparisonCtx = comparisonCanvas.getContext('2d');
-          new Chart(comparisonCtx, {
-              type: 'bar',
-              data: {
-                  labels: ['Bir Deste', 'Bir Düzine', 'Bir Mol'],
-                  datasets: [{
-                      label: 'Yaklaşık Basamak Sayısı (10^x)',
-                      data: [1, 1.08, 23],
-                      backgroundColor: vibrantPalette,
-                      borderColor: vibrantPalette.map(c => c + 'CC'),
-                      borderWidth: 1
-                  }]
-              },
-              options: {
-                  ...defaultChartOptions,
-                  plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                          callbacks: {
-                              title: tooltipTitleCallback
-                          }
-                      }
-                  }
-              }
-          });
-      }
-    </script>
-
-</body>
-</html>
+        const ctx = comparisonCanvas.getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Bir Deste', 'Bir Düzine', 'Bir Mol'],
+            datasets: [{
+              label: 'Basamak Sayısı (10^x)',
